@@ -1,1 +1,42 @@
-//coinmovegame
+#include<iostream>
+using namespace std;
+#define FOR(i,n) for(int i=1;i<=n;i++)
+int arr[8][1000001];
+
+void DP(int p, int k, int s)
+{
+	FOR(i, s) FOR(j, k)arr[j][i] = 0;
+	int cnt = 0;
+	int result = -1;
+	FOR(i, s) FOR(j, k)
+	{
+		if (i%p == 0 && i != s)
+		{
+			arr[j][i] = 1;
+			continue;
+		}
+		cnt = 0;
+		FOR(z, k)
+		{
+			if (z == j)continue;
+			if (i - j < 0)break;
+			if (arr[z][i - j] == 0)cnt++;
+		}
+		if (cnt == k - 1)arr[j][i] = 1;
+	}
+	for (int i = 1; i <=k&&result==-1; i++) if (arr[i][s]) result = s - i;
+	cout << result << "\n";
+}
+
+int main()
+{
+	freopen("coinmove.inp", "r", stdin);
+	freopen("coinmove.out", "w", stdout);
+	int t, P, S, K;
+	cin >> t;
+	FOR(testcase, t)
+	{
+		cin >> P >> K >> S;
+		DP(P, K, S);
+	}
+}
