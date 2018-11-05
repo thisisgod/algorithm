@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+#define FOR(i,n) for(int i=1;i<=n;i++)
+int arr[201][201][201];
+
+int main()
+{
+	int w, l, h, t, cnt;
+	cin >> t;
+	FOR(i, 200) arr[i][i][i] = 1;
+	FOR(i, 200) FOR(j, 200) FOR(k, 200)
+	{
+		if (i == j&&j == k)continue;
+		if (!arr[i][j][k])
+		{
+			FOR(z, i / 2)
+			{
+				arr[i][j][k] = !arr[i][j][k] ? arr[i - z][j][k] + arr[z][j][k] : arr[i][j][k] > arr[i - z][j][k] + arr[z][j][k] ? arr[i - z][j][k] + arr[z][j][k] : arr[i][j][k];
+			}
+			FOR(z, j / 2)
+			{
+				arr[i][j][k] = !arr[i][j][k] ? arr[i][j - z][k] + arr[i][z][k] : arr[i][j][k] > arr[i][j - z][k] + arr[i][z][k] ? arr[i][j - z][k] + arr[i][z][k] : arr[i][j][k];
+			}
+			FOR(z, k / 2)
+			{
+				arr[i][j][k] = !arr[i][j][k] ? arr[i][j][k - z] + arr[i][j][z] : arr[i][j][k] > arr[i][j][k - z] + arr[i][j][z] ? arr[i][j][k - z] + arr[i][j][z] : arr[i][j][k];
+			}
+			arr[i][k][j] = arr[j][i][k] = arr[k][i][j] = arr[j][k][i] = arr[k][j][i] = arr[i][j][k];
+		}
+	}
+	FOR(testcase, t)
+	{
+		cnt = 0;
+		cin >> w >> l >> h;
+		cout << arr[w][l][h] << "\n";
+	}//test
+}//main
