@@ -5,19 +5,50 @@ using namespace std;
 
 int main()
 {
-	int n, a,t;
-	pair<int, int> p;
-	vector<pair<int, int>> gt;
-	vector<vector<pair<int,int>>> check;
+	freopen("lis.inp", "r", stdin);
+	freopen("lis.out", "w", stdout);
+	int n, a, t,result;
 	cin >> t;
 	for (int testcase = 0; testcase < t; testcase++)
 	{
+		pair<int, int> p;
+		vector<pair<int, int>> gt;
+		vector<vector<pair<int, int>>> check;
+		result = 0;
 		cin >> n;
-		for (int i = 0; i < n; i++)
+		cin >> a;
+		p = make_pair(a, 1);
+		gt.push_back(p);
+		check.push_back(gt);
+		gt.pop_back();
+		for (int i = 1; i < n; i++)
 		{
 			cin >> a;
 			p = make_pair(a, 1);
-			gt.push_back(p);
-		}
-	}
-}
+			for (int j = 0; j < check.size(); j++)
+			{
+				if (p.first <= check[j].back().first)
+				{
+					if (j)
+					{
+						for (int z = 0; z < check[j - 1].size(); z++)if(check[j-1][z].first<p.first)p.second += check[j - 1][z].second;
+						p.second--;
+					}
+					check[j].push_back(p);
+					break;
+				}
+				else if (j == check.size() - 1)
+				{
+					for (int z = 0; z < check[j].size(); z++)if (check[j][z].first<p.first)p.second += check[j][z].second;
+					p.second--;
+					gt.push_back(p);
+					check.push_back(gt);
+					gt.pop_back();
+					break;
+				}
+			}//j
+		}//i
+		for (int i = 0; i < check[check.size() - 1].size(); i++)result += check[check.size() - 1][i].second;
+		cout << check.size() << " "<<result << "\n";
+	}//testcase
+}//main
