@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include<stdio.h>//correct
 #include<iostream>
 using namespace std;
 #define FOR(i,n) for(int i=1;i<=n;i++)
