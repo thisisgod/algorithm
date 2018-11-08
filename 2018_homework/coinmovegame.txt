@@ -1,4 +1,4 @@
-#include<iostream>
+#include<iostream>//correct
 using namespace std;
 #define FOR(i,n) for(int i=1;i<=n;i++)
 int arr[8][1000001];
