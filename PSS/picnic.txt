@@ -1,1 +1,52 @@
-//picnic
+//picnic correct
+#include<iostream>
+using namespace std;
+int t,n,m,a,b,cnt,result;
+int arr[10][10];
+int check[10];
+
+int picnic(int go)
+{
+	for (int i = 0; i < n; i++)if (check[i])cnt++;
+	if (cnt == n)
+	{
+		cnt = 0;
+		result++;
+		return 0;
+	}
+	cnt = 0;
+	if (cnt % 2 == 0)for (int i = go; i < n; i++) if (!check[i])
+	{
+		check[i] = 1;
+		for (int j = i+1; j < n; j++)
+		{
+			if (!check[j]&&arr[i][j])
+			{
+				check[j] = 1;
+				picnic(i);
+				check[j] = 0;
+			}
+		}
+		check[i] = 0;
+	}
+}
+
+int main()
+{
+	freopen("1.inp", "r", stdin);
+	freopen("1.out", "w", stdout);
+	cin >> t;
+	for (int test = 0; test < t; test++)
+	{
+		result = 0;
+		cin >> n >> m;
+		for (int inp = 0; inp < m; inp++)
+		{
+			cin >> a >> b;
+			a > b ? arr[b][a] = 1 : arr[a][b] = 1;
+		}//inp
+		picnic(0);
+		for (int i = 0; i < 10; i++)for (int j = 0; j < 10; j++)arr[i][j] = 0;
+		cout << result << "\n";
+	}//test
+}
