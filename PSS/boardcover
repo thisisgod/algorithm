@@ -1,0 +1,81 @@
+//boardcover correct
+#include<iostream>
+using namespace std;
+int t,w,h,cnt,check,result;
+int arr[21][21];
+
+void game()
+{
+	int x = -1, y = -1;
+	for (int i = 1; i <= h && y == -1; i++)for (int j = 1; j <= w; j++) {
+		if (!arr[i][j])
+		{
+			x = j;
+			y = i;
+			break;
+		}
+	}
+	if (check == cnt)
+	{
+		result++;
+		return;
+	}
+	if (x != w && y != h && !arr[y][x] && !arr[y][x + 1] && !arr[y + 1][x])
+	{
+		arr[y][x] = arr[y][x + 1] = arr[y + 1][x] = 1;
+		check += 3;
+		game();
+		arr[y][x] = arr[y][x + 1] = arr[y + 1][x] = 0;
+		check -= 3;
+	}
+	if (x != w && y != h && !arr[y][x] && !arr[y][x + 1] && !arr[y + 1][x + 1])
+	{
+		arr[y][x] = arr[y][x + 1] = arr[y + 1][x + 1] = 1;
+		check += 3;
+		game();
+		arr[y][x] = arr[y][x + 1] = arr[y + 1][x + 1] = 0;
+		check -= 3;
+	}
+	if (x != 1 && y != h && !arr[y][x] && !arr[y + 1][x] && !arr[y + 1][x - 1])
+	{
+		arr[y][x] = arr[y + 1][x] = arr[y + 1][x - 1] = 1;
+		check += 3;
+		game();
+		arr[y][x] = arr[y + 1][x] = arr[y + 1][x - 1] = 0;
+		check -= 3;
+	}
+	if (x != w && y != h && !arr[y][x] && !arr[y + 1][x] && !arr[y + 1][x + 1])
+	{
+		arr[y][x] = arr[y + 1][x] = arr[y + 1][x + 1] = 1;
+		check += 3;
+		game();
+		arr[y][x] = arr[y + 1][x] = arr[y + 1][x + 1] = 0;
+		check -= 3;
+	}
+}
+
+int main()
+{
+	freopen("1.inp", "r", stdin);
+	freopen("1.out", "w", stdout);
+	cin >> t;
+	char c;
+	for (int test = 0; test < t; test++)
+	{
+		cin >> h >> w;
+		for (int i = 1; i <= h; i++)
+		{
+			for (int j = 1; j <= w; j++)
+			{
+				cin >> c;
+				if (c == '#')arr[i][j] = 1;
+				if (c == '.')cnt ++;
+			}
+		}
+		if(cnt%3==0)game();
+		cnt = 0;
+		for (int i = 1; i <= h; i++)for (int j = 1; j <= w; j++)arr[i][j] = 0;
+		cout << result << "\n";
+		result = 0;
+	}//test
+}
