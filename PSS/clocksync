@@ -1,0 +1,62 @@
+#include<iostream>
+using namespace std;
+
+int arr[10][5] = {
+{0,1,2,-1,-1},
+{3,7,9,11,-1},
+{4,10,14,15,-1},
+{0,4,5,6,7},
+{6,7,8,10,12},
+{0,2,14,15,-1},
+{3,14,15,-1,-1},
+{4,5,7,14,15},
+{1,2,3,4,5},
+{3,4,5,9,13}
+};
+int clocks[16];
+int INF = 9999;
+
+bool check()
+{
+	for (int i = 0; i < 16; i++)if (clocks[i] != 12)return false;
+	return true;
+}
+
+void time_go(int clicked)
+{
+	for (int i = 0; i < 5 && clocks[i] != -1; i++)
+	{
+		clocks[arr[clicked][i]] += 3;
+		if (clocks[arr[clicked][i]] >12)clocks[arr[clicked][i]] = 3;
+	}
+}
+
+int sync(int clicked)
+{
+	if (clicked == 10)return check() ? 0 : INF;
+	int ret = INF;
+	for (int i = 0; i < 4; i++)
+	{
+		ret = i + sync(clicked + 1) > ret ? ret : i + sync(clicked + 1);
+		time_go(clicked);
+	}
+	return ret;
+}
+
+int main()
+{
+	freopen("1.inp", "r", stdin);
+	freopen("1.out", "w", stdout);
+	int t;
+	cin >> t;
+	for (int test = 0; test < t; test++)
+	{
+		for (int go = 0; go < 16; go++)
+		{
+			cin >> clocks[go];
+		}
+		int result = sync(0);
+		if (result == 9999)result = -1;
+		cout << result << "\n";
+	}
+}
