@@ -1,0 +1,32 @@
+//correct 풀이봄 다시풀어볼것 (12/10)
+#include<iostream>
+#include<string>
+using namespace std;
+
+string quad(string::iterator &it)
+{
+	char head =*it;
+	++it;
+	if (head == 'w' || head == 'b')return string(1, head);
+	string LU = quad(it);
+	string RU = quad(it);
+	string LD = quad(it);
+	string RD = quad(it);
+	return string("x") + LD + RD + LU + RU;
+}
+
+int main()
+{
+	freopen("1.inp", "r", stdin);
+	freopen("1.out", "w", stdout);
+	int t;
+	cin >> t;
+	getchar();
+	for (int test = 0; test < t; test++)
+	{
+		string s;
+		getline(cin, s);
+		string::iterator it = s.begin();
+		cout << quad(it) << "\n";
+	}
+}
