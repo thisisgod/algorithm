@@ -1,0 +1,47 @@
+//correct 다시 풀어볼것
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int arr[20000];
+
+int square(int left,int right)
+{
+	if (left == right)return arr[left];
+	int mid = (left + right) / 2;
+	int ret = max(square(left, mid), square(mid + 1, right));
+	int lo=mid, ro=mid+1;
+	int height = min(arr[lo], arr[ro]);
+	ret = max(ret, height * 2);
+	while (left < lo || right > ro) {
+		if (ro < right && (lo == left || arr[lo - 1] < arr[ro + 1]))
+		{
+			ro++;
+			height = min(arr[ro], height);
+		}
+		else
+		{
+			lo--;
+			height = min(arr[lo], height);
+		}
+		ret = max(ret, height*(ro - lo + 1));
+	}
+	return ret;
+}
+
+int main()
+{
+	freopen("1.inp", "r", stdin);
+	freopen("1.out", "w", stdout);
+	int t, n;
+	cin >> t;
+	for (int test = 0; test < t; test++)
+	{
+		cin >> n;
+		for (int input = 0; input < n; input++)
+		{
+			cin >> arr[input];
+		}
+		cout << square(0, n - 1) << "\n";
+	}
+}
