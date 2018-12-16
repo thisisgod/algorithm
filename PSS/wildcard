@@ -1,4 +1,4 @@
-//correct memoization에 대한 개념을 이용한 문제 다시 생각해볼것
+//correct memoization에 대한 개념을 이용한 문제 다시 생각해볼것 20181215
 #include<iostream>
 #include<string>
 #include<algorithm>
