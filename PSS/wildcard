@@ -1,0 +1,59 @@
+//correct memoization에 대한 개념을 이용한 문제 다시 생각해볼것
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+int cache[101][101];
+string W, S;
+
+bool Memoization(int w, int s)
+{
+	int &ret = cache[w][s];
+	if (ret != -1)return ret;
+
+	while (s < S.size() && w < W.size() && (W[w] == S[s] || W[w] == '?'))
+	{
+		w++;
+		s++;
+	}
+	if (w == W.size())return ret = s = (s == S.size());
+	if (W[w] == '*')
+	{
+		for (int skip = 0; skip + s <= S.size(); skip++)
+		{
+			if (Memoization(w + 1, s + skip))return ret = 1;
+		}
+	}
+	return ret = 0;
+}
+
+bool compare(const string  &a, const string &b)
+{
+	return a < b;
+}
+
+int main()
+{
+	freopen("1.inp", "r", stdin);
+	freopen("1.out", "w", stdout);
+	int t,n,w,s;
+	cin >> t;
+	getchar();
+	for (int test = 0; test < t; test++)
+	{
+		vector<string> result;
+		getline(cin, W);
+		cin >> n;
+		getchar();
+		for (int query = 0; query < n; query++)
+		{
+			getline(cin, S);
+			for (int i = 0; i <= W.size(); i++)for (int j = 0; j <= S.size(); j++)cache[i][j] = -1;
+			if (Memoization(0, 0))result.push_back(S);
+		}
+		sort(result.begin(), result.end(),compare);
+		for (string a : result)	cout << a << "\n";
+	}
+}
