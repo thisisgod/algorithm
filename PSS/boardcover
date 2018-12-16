@@ -1,4 +1,4 @@
-//boardcover correct
+//boardcover correct 20181210
 #include<iostream>
 using namespace std;
 int t,w,h,cnt,check,result;
