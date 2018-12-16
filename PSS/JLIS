@@ -1,0 +1,44 @@
+//correct 다시 풀어봐 난 멘탈나갔어 20181217
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+const long long int NEGINF = numeric_limits<long long>::min();
+int A[100], B[100],cache[101][101];
+int n, m;
+
+int jlis(int indexA,int indexB)
+{
+	int &ret = cache[indexA+1][indexB+1];
+	if (ret != -1)return ret;
+	ret = 2;
+
+	long long a = (indexA == -1 ? NEGINF : A[indexA]);
+	long long b = (indexB == -1 ? NEGINF : B[indexB]);
+	long long maxnum = a > b ? a : b;
+
+	for (int nextA = indexA + 1; nextA < n; nextA++)
+		if (maxnum < A[nextA])
+			ret = max(ret, jlis(nextA, indexB) + 1);
+	for (int nextB = indexB + 1; nextB < m; nextB++)
+		if (maxnum < B[nextB])
+			ret = max(ret, jlis(indexA, nextB) + 1);
+	return ret;
+}//LIS
+
+int main()
+{
+	freopen("1.inp", "r", stdin);
+	freopen("1.out", "w", stdout);
+	int t,num;
+	cin >> t;
+	for (int test = 0; test < t; test++)
+	{
+		cin >> n >> m;
+		for (int inp = 0; inp < n; inp++)cin >> A[inp];
+		for (int inp = 0; inp < m; inp++)cin >> B[inp];
+		for (int i = 0; i < n + 1; i++)for (int j = 0; j < m + 1; j++)cache[i][j] = -1;
+		cout << jlis(-1, -1)-2<<"\n";
+	}//test
+}//main
