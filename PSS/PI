@@ -1,0 +1,63 @@
+//PI 20181226
+#include<iostream>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+#define INF 987654321
+
+string str;
+int arr[10001];
+
+int classify(int a, int b)//a == 시작점, b == 끝점
+{
+	string M = str.substr(a, b - a + 1);
+	if (M == string(M.size(), M[0]))return 1;
+	
+	bool inc = true;
+	for (int i = 0; i < M.size()-1; i++)
+	{
+		if (M[i+1] - M[i] != M[1] - M[0])inc = false;
+	}
+	if (inc&&abs(M[1] - M[0]) == 1)return 2;
+	if (inc)return 5;
+	
+	inc = true;
+	for (int i = 0; i < M.size(); i++)
+	{
+		if (M[i] != M[i % 2])inc = false;
+	}
+	if (inc)return 4;
+	return 10;
+}
+
+int memoization(int begin)
+{
+	if (begin == str.size())return 0;
+
+	int &ret = arr[begin];
+	if (ret != -1)return ret;
+	ret = INF;
+
+	for (int i = 3; i <= 5; i++)
+	{
+		if(begin+i<=str.size())
+			ret = min(ret,memoization(begin + i)+classify(begin,begin+i-1));
+	}
+	return ret;
+}
+
+int main()
+{
+	freopen("input.inp", "r", stdin);
+	freopen("out.out", "w", stdout);
+	int t; 
+	cin >> t;
+	getchar();
+	for (int test = 0; test < t; test++)
+	{
+		getline(cin, str);
+		for (int i = 0; i < str.size(); i++)arr[i] = -1;
+		cout << memoization(0) << "\n";
+	}
+}
