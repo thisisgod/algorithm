@@ -1,0 +1,39 @@
+//asymtiling 20181229
+#include<iostream>
+#include<algorithm>
+using namespace std;
+#define MOD 1000000007
+int cache[101],n;
+
+int tiling(int num)
+{
+	if (num <= 1)return 1;
+	int &ret = cache[num];
+	if (ret != -1)return ret;
+
+	ret = (tiling(num - 1) + tiling(num - 2)) % MOD;
+	return ret;
+}
+
+int asymmetric(int num)
+{
+	if (num % 2 == 1)return (tiling(num) - tiling(num - 1) + MOD) % MOD;
+	int ret = tiling(num);
+	ret = (ret - tiling(num/2) + MOD) % MOD;
+	ret = (ret - tiling(num/2-1) + MOD) % MOD;
+	return ret;
+}
+
+int main()
+{
+	freopen("input.inp", "r", stdin);
+	freopen("out.out", "w", stdout);
+	int t;
+	cin >> t;
+	for (int test = 0; test < t; test++)
+	{
+		cin >> n;
+		for (int i = 0; i <= n; i++)cache[i] = -1;
+		cout << asymmetric(n)<<"\n";
+	}
+}
