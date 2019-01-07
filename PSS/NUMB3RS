@@ -1,0 +1,55 @@
+//NUMB3RS 20191007 P269
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int arr[50][50];
+int output[50];
+double cache[101][50];
+int c, n, d, p, t;
+
+double Memoization(int day, int start)
+{
+	if (day == 0)return (start == p ? 1.0 : 0.0);
+
+	double &ret = cache[day][start];
+	if (ret > -0.5)return ret;
+	ret = 0.0;
+
+	for (int i = 0; i < n; i++)
+		if (arr[start][i])ret += Memoization(day - 1, i) / output[i];
+	return ret;
+}
+
+int main()
+{
+	freopen("input.inp", "r", stdin);
+	freopen("out.out", "w", stdout);
+
+	cin >> c;
+
+	for (int test = 0; test < c; test++)
+	{
+		cin >> n >> d >> p;
+		for (int i = 0; i <= d; i++)
+			for (int j = 0; j < n; j++) cache[i][j] = -1;
+		for (int inp = 0; inp < n; inp++)
+		{
+			output[inp] = 0;
+			for (int inp1 = 0; inp1 < n; inp1++)
+			{
+				cin >> arr[inp][inp1];
+				if (arr[inp][inp1])output[inp]++;
+			}
+		}
+		cin >> t;
+		int start;
+		for (int out = 0; out < t; out++)
+		{
+			cin >> start;
+			cout.precision(8);
+			cout << Memoization(d, start) << " ";
+		}
+		cout << "\n";
+	}
+}
