@@ -1,4 +1,4 @@
-//2048 20190107 2048
+//2048 20190107 추억의 2048 게임
 #include<iostream>
 using namespace std;
 #define f(i,n) for(int i=0;i<n;i++)
