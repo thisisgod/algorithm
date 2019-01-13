@@ -1,4 +1,4 @@
-//사탕게임 20190108 3085
+//사탕게임 20190108 완전탐색
 #include<iostream>
 #include<string>
 #include<vector>
