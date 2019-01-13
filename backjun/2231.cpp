@@ -1,4 +1,4 @@
-//분해합 20190108 2231
+//분해합 20190108 
 #include<iostream>
 using namespace std;
 #define f(i,n) for(int i=1;i<=n;i++)
