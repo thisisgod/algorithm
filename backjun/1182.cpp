@@ -1,4 +1,4 @@
-//부분집합의 합 20190113 1182
+//부분집합의 합 20190113 
 #include<iostream>
 using namespace std;
 #define f(i,k,n) for(int i=k;i<n;i++)
