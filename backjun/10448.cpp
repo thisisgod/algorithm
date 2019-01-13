@@ -1,4 +1,4 @@
-//유레카 이론 20190111 10448
+//유레카 이론 20190111 
 #include<iostream>
 using namespace std;
 #define f(i,k,n) for(int i=k;i<n;i++)
