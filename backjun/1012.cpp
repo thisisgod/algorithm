@@ -12,7 +12,7 @@ bool check[50][50];
 
 bool exception_handling(int one, int two, int type)
 {
-	if (type<3)
+	if (type<2)
 	{
 		if (one + dx[type] > -1 && one + dx[type] < m)return true;
 		else return false;
