@@ -1,14 +1,12 @@
 //연결요소의 갯수 20190215 DFS
 #include<iostream>
 #include<vector>
-#include<stack>
 using namespace std;
 #define f(i,k,n) for(int i=k;i<n;i++)
 
 int n,m,cnt;
 bool visit[1001];
 bool map[1001][1001];
-stack<int>st;
 
 void dfs(int cur)
 {
