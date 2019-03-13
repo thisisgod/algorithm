@@ -5,103 +5,58 @@
 using namespace std;
 
 int n;
-double arr[1000];
+int arr1[1000];
+int arr2[1000];
 
-bool compare(const double &a, const double &b)
+bool compare(const int &a, const int &b)
 {
 	return a < b;
 }
 
-double cul(double avg)
+int cul(int avg,int arr[])
 {
-	double result = 0, tmp;
-	sort(arr, arr + n, compare);
-	for (int i = 0, j = n - 1; i < j;)
+	int result = 0, tmp;
+	for (int i = 0, j = n-1;;)
 	{
-		if (arr[j] - arr[i] < 1.1)break;
-		if (avg - arr[i] > arr[j] - avg && arr[j] - avg > 0.1)
+		sort(arr, arr + n, compare);
+		if (arr[j] == avg || arr[i] == avg)
 		{
-			tmp = floor(arr[j] - avg);
-			result += tmp;
-			arr[i] += tmp;
-			arr[j] -= tmp;
-			if (avg - arr[i] > 0.1)i--;
-			i++;
-			j--;
+			break;
 		}
-		else if (arr[j] - avg > avg - arr[i] && avg - arr[i] > 0.1)
-		{
-			tmp = floor(avg - arr[i]);
-			result += tmp;
-			arr[i] += tmp;
-			arr[j] -= tmp;
-			if (arr[j] - avg > 0.1)j++;
-			j--;
-			i++;
-		}
-		else if (arr[j] - avg < 0.1)
-		{
-			tmp = 1;
-			result += tmp;
-			arr[i] += tmp;
-			arr[j] -= tmp;
-			if (avg - arr[i] > 0.1)i--;
-			j--;
-			i++;
-		}
-		else if (avg - arr[i] < 0.1)
-		{
-			tmp = 1;
-			result += tmp;
-			arr[i] += tmp;
-			arr[j] -= tmp;
-			if (arr[j] - avg > 0.1)j++;
-			i++;
-			j--;
-		}
-		else
-		{
-			tmp = floor(arr[j] - avg);
-			result += tmp;
-			arr[i] += tmp;
-			arr[j] -= tmp;
-			i++;
-			j--;
-		}
+		tmp = avg - arr[i] > arr[j] - avg?arr[j] - avg: avg - arr[i];
+		arr[j] -= tmp;
+		arr[i] += tmp;
+		result += tmp;
 	}
 	return result;
 }
 
 int main()
 {
-	freopen("2.inp", "r", stdin);
+	freopen("inp.inp", "r", stdin);
 	freopen("out.out", "w", stdout);
 
 	double avg;
+	int a, b;
 	for (;;)
 	{
 		cin >> n;
 		if (!n)return 0;
 		avg = 0.0;
+		int sum = 0;
 		for (int inp = 0; inp < n; inp++)
 		{
-			cin >> arr[inp];
-			arr[inp] = floor(arr[inp] * 100 + 0.5);
-			avg += arr[inp];
+			scanf("%d.%d", &a, &b);
+			arr1[inp] = a * 100 + b;
+			arr2[inp] = a * 100 + b;
+			sum += a * 100 + b;
 		}
-		avg /= n;
-		int c = (int)(avg + 0.5);
-		int c1 = (int)avg;
+		avg =(double)sum/n;
 
 		int ret;
-		if (c != c1)
-		{
-			ret = (int)cul(floor(avg + 0.5));
-		}
-		else
-		{
-			ret = (int)cul(floor(avg));
-		}
+		int ret1 = cul(floor(avg),arr1);
+		int ret2 = cul(ceil(avg),arr2);
+		ret = ret1 > ret2 ? ret1 : ret2;
 		printf("$%d.%d%d\n", ret / 100, (ret / 10) % 10, ret % 10);
 	}
 }
