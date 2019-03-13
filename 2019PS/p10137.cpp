@@ -18,8 +18,8 @@ double cul(double avg)
 	sort(arr, arr + n, compare);
 	for (int i = 0, j = n - 1; i < j;)
 	{
-		if (arr[j] - arr[i] < 1)break;
-		if (avg - arr[i] > arr[j] - avg)
+		if (arr[j] - arr[i] < 1.1)break;
+		if (avg - arr[i] > arr[j] - avg && arr[j] - avg > 0.1)
 		{
 			tmp = floor(arr[j] - avg);
 			result += tmp;
@@ -29,7 +29,7 @@ double cul(double avg)
 			i++;
 			j--;
 		}
-		else if (arr[j] - avg > avg - arr[i])
+		else if (arr[j] - avg > avg - arr[i] && avg - arr[i] > 0.1)
 		{
 			tmp = floor(avg - arr[i]);
 			result += tmp;
@@ -38,6 +38,26 @@ double cul(double avg)
 			if (arr[j] - avg > 0.1)j++;
 			j--;
 			i++;
+		}
+		else if (arr[j] - avg < 0.1)
+		{
+			tmp = 1;
+			result += tmp;
+			arr[i] += tmp;
+			arr[j] -= tmp;
+			if (avg - arr[i] > 0.1)i--;
+			j--;
+			i++;
+		}
+		else if (avg - arr[i] < 0.1)
+		{
+			tmp = 1;
+			result += tmp;
+			arr[i] += tmp;
+			arr[j] -= tmp;
+			if (arr[j] - avg > 0.1)j++;
+			i++;
+			j--;
 		}
 		else
 		{
@@ -54,7 +74,7 @@ double cul(double avg)
 
 int main()
 {
-	freopen("inp.inp", "r", stdin);
+	freopen("2.inp", "r", stdin);
 	freopen("out.out", "w", stdout);
 
 	double avg;
@@ -69,7 +89,7 @@ int main()
 			arr[inp] = floor(arr[inp] * 100 + 0.5);
 			avg += arr[inp];
 		}
-		avg /= n; / l.....a/	0o0ere0;
+		avg /= n;
 		int c = (int)(avg + 0.5);
 		int c1 = (int)avg;
 
@@ -81,7 +101,6 @@ int main()
 		else
 		{
 			ret = (int)cul(floor(avg));
-			ret += (int)cul(floor(avg));
 		}
 		printf("$%d.%d%d\n", ret / 100, (ret / 10) % 10, ret % 10);
 	}
