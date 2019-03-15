@@ -91,5 +91,4 @@ int main()
 		map[b][a] = c;
 	}
 	cout << prim();
-	int a = 1;
 }
