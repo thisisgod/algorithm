@@ -3,33 +3,25 @@
 #include<algorithm>
 using namespace std;
 #define INF 10001
+#define Max 100000
 
 int n, m, a, b, c,cnt=1;
 int map[1001][1001];
+int check[1001];
 
 struct line {
-	int x, y,data=INF;
+	int x=0, y=0,data=INF;
 };
 
-line heap[100000];
+line heap[Max];
 
-void push(line inp)
+line newline(int x,int y,int data)
 {
-	if (cnt==1)heap[cnt++] = inp;
-	else
-	{
-		heap[cnt] = inp;
-		for (int i = cnt++; i > 1; i /= 2)
-		{
-			if (heap[i].data < heap[i / 2].data)
-			{
-				line tmp = heap[i];
-				heap[i] = heap[i / 2];
-				heap[i / 2] = tmp;
-			}
-			else break;
-		}
-	}
+	line l;
+	l.x = x;
+	l.y = y;
+	l.data = data;
+	return l;
 }
 
 int swap(int f, int s)
@@ -40,19 +32,47 @@ int swap(int f, int s)
 	return s;
 }
 
+void push(line inp)
+{
+	if (cnt==1)heap[cnt++] = inp;
+	else
+	{
+		heap[cnt] = inp;
+		for (int i = cnt++; i > 1; i /= 2)
+		{
+			if (heap[i].data < heap[i / 2].data) swap(i, i/2);
+			else break;
+		}
+	}
+}
+
 line pop()
 {
 	line ret = heap[1];
-	heap[1] = heap[cnt - 1];
-	heap[cnt - 1].data = INF;
 	cnt--;
-	for (int i = 1; i < cnt - 1;)
+	heap[1] = heap[cnt];
+	heap[cnt].data = INF;
+	for (int i = 1; i < cnt;)
 	{
-		if (heap[i].data > heap[i * 2].data&&heap[i].data > heap[i * 2 + 1].data) 
+		if (i * 2 > Max)break;
+		if (heap[i].data < heap[i * 2].data&&heap[i].data < heap[i * 2 + 1].data) break;
 			i = heap[i * 2].data > heap[i * 2 + 1].data? swap(i, i * 2 + 1):swap(i, i * 2);
-		else if (heap[i].data > heap[i * 2].data)i = swap(i, i * 2);
-		else if (heap[i].data > heap[i * 2 + 1].data)i = swap(i, i * 2 + 1);
-		else break;
+	}
+	return ret;
+}
+
+int prim()
+{
+	int ret = 0;
+	line cur = newline(INF, 1, 0);
+	push(cur);
+	for (; cnt;)
+	{
+		cur = pop();
+		if (check[cur.y])continue;
+		check[cur.y] = cur.x;
+		ret += cur.data;
+		for (int i = 0; i <= n; i++)if (!check[i]&&map[cur.y][i])push(newline(cur.y, i, map[cur.y][i]));
 	}
 	return ret;
 }
@@ -68,13 +88,8 @@ int main()
 	{
 		cin >> a >> b >> c;
 		map[a][b] = c;
-		tmp1.x = a;
-		tmp1.y = b;
-		tmp1.data = c;
-		push(tmp1);
+		map[b][a] = c;
 	}
+	cout << prim();
 	int a = 1;
-	pop();
- 	pop();
-	pop();
 }
