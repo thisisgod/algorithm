@@ -1,4 +1,4 @@
-#include<iostream>
+#include<iostream>//80
 #include<stdio.h>
 #include<algorithm>
 #include<vector>
@@ -23,8 +23,8 @@ vector<point> pos;
 
 int direction(point a, point b, point c)
 {
-	if (b.x*a.y + c.x*b.y + a.x*c.y - c.x*a.y - b.x*c.y - a.x*b.y == 0)return 0;
-	else b.x*a.y + c.x*b.y + a.x*c.y - c.x*a.y - b.x*c.y - a.x*b.y < 0 ? -1 : 1;
+	long long int ret = b.x*a.y + c.x*b.y + a.x*c.y - c.x*a.y - b.x*c.y - a.x*b.y;
+	return ret < 0 ? -1 : ret == 0 ? 0 : 1;
 }
 
 bool point_in_box(point a, point b, point c)
@@ -34,33 +34,32 @@ bool point_in_box(point a, point b, point c)
 
 int point_in_polygon(point a)
 {
-	int ret = INF,icnt=0;
+	int ret = INF, icnt = 0;
 	for (int i = 0; i < n; i++)
 	{
 		if (direction(pos[i], pos[i + 1], a) == 0 && point_in_box(pos[i], pos[i + 1], a))return 1;
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		int cnt = 0;
+		int cnt = icnt = 0;
 		for (int j = 0; j < n; j++)
 		{
 			if (direction(pos[j], pos[j + 1], point(a.x + dx[i], a.y + dy[i]))*direction(pos[j], pos[j + 1], a) < 0)
 			{
 				if (direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j])*direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]) < 0)cnt++;
-				if (direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j])*direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]) == 0)icnt++;
+				else if ((direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j]) == 0 && point_in_box(a, point(a.x + dx[i], a.y + dy[i]), pos[j])) || (direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]) == 0 && point_in_box(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]))) icnt++;
 			}
-			else if (direction(pos[j], pos[j + 1], a) == 0 && point_in_box(pos[j], pos[j + 1], a))cnt++;
+			else if ((direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j]) == 0 && point_in_box(a, point(a.x + dx[i], a.y + dy[i]), pos[j])) && (direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]) == 0 && point_in_box(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1])))cnt++;
 		}
-		ret = min(ret, cnt);
+		ret = min(ret, cnt + icnt / 2);
 	}
-	if (icnt == 8)return 1;
 	return ret % 2;
 }
 
 int main()
 {
-	freopen("inp.inp", "r", stdin);
-	freopen("out.out", "w", stdout);
+	freopen("point.inp", "r", stdin);
+	freopen("point.out", "w", stdout);
 	cin >> n;
 	for (int inp = 0; inp < n; inp++)
 	{
@@ -75,12 +74,3 @@ int main()
 		cout << point_in_polygon(point(a, b)) << "\n";
 	}
 }
-/*
-4
-0 5
-5 5
-0 -5
--5 -5
-1
-0 0
-*/
