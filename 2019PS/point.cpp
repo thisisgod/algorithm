@@ -1,4 +1,4 @@
-#include<iostream>//80
+#include<iostream>//90
 #include<stdio.h>
 #include<algorithm>
 #include<vector>
@@ -6,8 +6,8 @@ using namespace std;
 #define INF 99999
 
 int n, k, a, b;
-int dx[4] = { 0,0,10001,-10001 };
-int dy[4] = { 10001,-10001,0,0 };
+int dx[8] = { 0,0,10001,-10001,10001,10001,-10001,-10001};
+int dy[8] = { 10001,-10001,0,0,10001,-10001,10001,-10001};
 
 class point {
 public:
@@ -39,7 +39,7 @@ int point_in_polygon(point a)
 	{
 		if (direction(pos[i], pos[i + 1], a) == 0 && point_in_box(pos[i], pos[i + 1], a))return 1;
 	}
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		int cnt = icnt = 0;
 		for (int j = 0; j < n; j++)
