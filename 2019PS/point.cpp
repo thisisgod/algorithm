@@ -75,3 +75,12 @@ int main()
 		cout << point_in_polygon(point(a, b)) << "\n";
 	}
 }
+/*
+4
+0 5
+5 5
+0 -5
+-5 -5
+1
+0 0
+*/
