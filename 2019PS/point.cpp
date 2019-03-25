@@ -1,13 +1,10 @@
-#include<iostream>//90
+#include<iostream>
 #include<stdio.h>
 #include<algorithm>
 #include<vector>
 using namespace std;
-#define INF 99999
 
 int n, k, a, b;
-int dx[8] = { 0,0,10001,-10001,10001,10001,-10001,-10001};
-int dy[8] = { 10001,-10001,0,0,10001,-10001,10001,-10001};
 
 class point {
 public:
@@ -34,26 +31,20 @@ bool point_in_box(point a, point b, point c)
 
 int point_in_polygon(point a)
 {
-	int ret = INF, icnt = 0;
-	for (int i = 0; i < n; i++)
+	int ret = 0;
+	for (int i = 1; i <= n; i++) if (direction(pos[i], pos[i + 1], a) == 0 && point_in_box(pos[i], pos[i + 1], a))return 1;
+	for (int j = 1; j <= n; j++)
 	{
-		if (direction(pos[i], pos[i + 1], a) == 0 && point_in_box(pos[i], pos[i + 1], a))return 1;
-	}
-	for (int i = 0; i < 8; i++)
-	{
-		int cnt = icnt = 0;
-		for (int j = 0; j < n; j++)
+		if (direction(a, point(a.x + 20001, a.y), pos[j])*direction(a, point(a.x + 20001, a.y), pos[j + 1]) < 0)
 		{
-			if (direction(pos[j], pos[j + 1], point(a.x + dx[i], a.y + dy[i]))*direction(pos[j], pos[j + 1], a) < 0)
-			{
-				if (direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j])*direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]) < 0)cnt++;
-				else if ((direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j]) == 0 && point_in_box(a, point(a.x + dx[i], a.y + dy[i]), pos[j])) || (direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]) == 0 && point_in_box(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]))) icnt++;
-			}
-			else if ((direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j]) == 0 && point_in_box(a, point(a.x + dx[i], a.y + dy[i]), pos[j])) && (direction(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1]) == 0 && point_in_box(a, point(a.x + dx[i], a.y + dy[i]), pos[j + 1])))cnt++;
+			if (direction(pos[j], pos[j + 1], point(a.x + 20001, a.y))*direction(pos[j], pos[j + 1], a) < 0)ret++;
 		}
-		ret = min(ret, cnt + icnt / 2);
+		else if (direction(a, point(a.x + 20001, a.y), pos[j]) == 0 && point_in_box(a, point(a.x + 20001, a.y), pos[j]))
+		{
+			if (direction(a, point(a.x + 20001, a.y), pos[j - 1])*direction(a, point(a.x + 20001, a.y), pos[j + 1]) < 0)ret++;
+		}
 	}
-	return ret % 2;
+ 	return ret % 2;
 }
 
 int main()
@@ -61,12 +52,15 @@ int main()
 	freopen("point.inp", "r", stdin);
 	freopen("point.out", "w", stdout);
 	cin >> n;
+	pos.push_back(point(0, 0));
 	for (int inp = 0; inp < n; inp++)
 	{
 		cin >> a >> b;
 		pos.push_back(point(a, b));
 	}
-	pos.push_back(pos.front());
+	pos[0].x = pos[n].x;
+	pos[0].y = pos[n].y;
+	pos.push_back(pos[1]);
 	cin >> k;
 	for (int inp = 0; inp < k; inp++)
 	{
