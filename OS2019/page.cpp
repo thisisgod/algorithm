@@ -97,21 +97,10 @@ void FIFO_LRU_OPT(int what)
 			ret++;
 		}
 	}
-	if (!what)
-	{
-		cout << "FIFO: " << ret << "\n";
-		for (int i = 0; i < Frame.size(); i++)cout << i << " " << Frame[i].pid << " " << Frame[i].page << "\n";
-	}
-	else if(what==1)
-	{
-		cout << "LRU: " << ret << "\n";
-		for (int i = 0; i < Frame.size(); i++)cout << i << " " << Frame[i].pid << " " << Frame[i].page << "\n";
-	}
-	else if (what == 2)
-	{
-		cout << "OPT: " << ret << "\n";
-		for (int i = 0; i < Frame.size(); i++)cout << i << " " << Frame[i].pid << " " << Frame[i].page << "\n";
-	}
+	if (!what)cout << "FIFO: " << ret << "\n";
+	else if(what==1)cout << "LRU: " << ret << "\n";
+	else if (what == 2)cout << "OPT: " << ret << "\n";
+	for (int i = 0; i < Frame.size(); i++)cout << i << " " << Frame[i].pid << " " << Frame[i].page << "\n";
 	Frame.clear();
 	p.clear();
 }
